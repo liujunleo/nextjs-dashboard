@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { Button } from '@/app/ui/button';
 import { updateInvoice } from '@/app/lib/actions';
 import { useFormState } from 'react-dom';
+import { useState } from 'react';
 
 export default function EditInvoiceForm({
   invoice,
@@ -22,9 +23,17 @@ export default function EditInvoiceForm({
   const initialState = { message: null, errors: {} };
   const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
   const [state, dispatch] = useFormState(updateInvoiceWithId, initialState);
+  const [loading, setLoading] = useState(false);
 
+  function handleSubmit(data: FormData) {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    // dispatch(data);
+  }
   return (
-    <form action={dispatch}>
+    <form action={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}
         <div className="mb-4">
@@ -151,7 +160,7 @@ export default function EditInvoiceForm({
         >
           Cancel
         </Link>
-        <Button type="submit">Edit Invoice</Button>
+        <Button type="submit">{loading ? 'loading' : 'Edit Invoice1'}</Button>
       </div>
     </form>
   );
